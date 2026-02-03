@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2bgapyuu72kr"]
+
+[ext_resource type="Script" uid="uid://cjlqty54ytn0o" path="res://systems/terrain/mission_terrain.gd" id="1_7lngx"]
+
+[node name="MissionTerrain" type="Node3D"]
+script = ExtResource("1_7lngx")
