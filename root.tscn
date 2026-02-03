@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://cd4of0gtopiuq"]
+
+[ext_resource type="Material" uid="uid://bsaur3gtbi58t" path="res://systems/terrain/terrain_shader_material.tres" id="2_pyidc"]
+[ext_resource type="PackedScene" uid="uid://i223yqmann0v" path="res://free_cam.tscn" id="3_28aoi"]
+[ext_resource type="PackedScene" uid="uid://b2bgapyuu72kr" path="res://systems/terrain/mission_terrain.tscn" id="3_vvh5c"]
+
+[sub_resource type="Environment" id="Environment_vho56"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_pq8q7"]
+
+[node name="Root" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vho56")
+camera_attributes = SubResource("CameraAttributesPractical_pq8q7")
+
+[node name="MissionTerrain" parent="." instance=ExtResource("3_vvh5c")]
+terrain_material = ExtResource("2_pyidc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+shadow_enabled = true
+
+[node name="FreeCam" parent="." instance=ExtResource("3_28aoi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 176.00864, 0)
