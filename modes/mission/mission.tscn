@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://chpq21abacjhc"]
+[gd_scene load_steps=6 format=3 uid="uid://cd4of0gtopiuq"]
 
 [ext_resource type="Material" uid="uid://bsaur3gtbi58t" path="res://systems/terrain/terrain_shader_material.tres" id="2_pyidc"]
-[ext_resource type="PackedScene" uid="uid://bl6m47dj7t4to" path="res://free_cam.tscn" id="3_28aoi"]
+[ext_resource type="PackedScene" uid="uid://i223yqmann0v" path="res://systems/camera/free_cam.tscn" id="3_28aoi"]
 [ext_resource type="PackedScene" uid="uid://b2bgapyuu72kr" path="res://systems/terrain/mission_terrain.tscn" id="3_vvh5c"]
 
 [sub_resource type="Environment" id="Environment_vho56"]
