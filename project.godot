@@ -10,12 +10,15 @@ config_version=5
 
 [application]
 
+run/main_scene="uid://cd4of0gtopiuq"
 config/features=PackedStringArray("4.5")
 
 [autoload]
 
 ImGuiRoot="*res://addons/imgui-godot/data/ImGuiRoot.tscn"
 Loggie="*res://addons/loggie/loggie.gd"
+CameraManager="*res://camera_manager.gd"
+Debug="*res://debug/debug.gd"
 
 [debug_draw_3d]
 
@@ -29,3 +32,10 @@ version_control/autoload_on_startup=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/imgui-godot/plugin.cfg", "res://addons/loggie/plugin.cfg")
+
+[shader_globals]
+
+terrain_do_debug_color={
+"type": "bool",
+"value": false
+}

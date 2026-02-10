@@ -1,15 +1,28 @@
 extends Node
 
-# State
+var _major_version: int = 0
+var _minor_version: int = 3
+var _patch_version: int = 0
+
+var version: String:
+	get:
+		var version := [self._major_version, self._minor_version, self._patch_version]
+		return "%d.%d.%d-dev" % version if OS.has_feature("debug") else "%d.%d.%d" % version
+
+# General State
 var _wireframe_state: Array = [false]
 var _terrain_debug_state: Array = [false]
 
+# Loggie domains
+var _loggie_domains: Dictionary[String, bool] = {
+	"terrain": true,
+	"general": true,
+}
+
 func _process(_delta: float) -> void:
-	ImGui.Begin("[Debug] dev-0.2") # New version number :)
-	
+	ImGui.Begin("Developer Tools")
 	if ImGui.BeginTabBar("DebugTabs"):
-		
-		# --- TAB 1: GENERAL ---
+		self._info_tab()
 		if ImGui.BeginTabItem("General"):
 			ImGui.Text("Render Settings")
 			ImGui.Separator()
@@ -76,3 +89,9 @@ func _process(_delta: float) -> void:
 		ImGui.EndTabBar()
 	
 	ImGui.End()
+
+
+func _info_tab() -> void:
+	if ImGui.BeginTabItem("Info"):
+		ImGui.Text("Version: %s" % self.version)
+	ImGui.EndTabItem()
