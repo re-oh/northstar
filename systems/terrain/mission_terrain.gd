@@ -11,6 +11,7 @@ var _block_mesh: PlaneMesh
 var _block_instances: Array[Array] = []
 
 func _ready() -> void:
+	Loggie.msg("Test log").domain("general").channel("devtools").notice()
 	self._generate_geometry_instances()
 	if self.terrain_material:
 		# Ensure debug color is off by default
