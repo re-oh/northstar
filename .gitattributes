@@ -1,11 +1,36 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# Git LFS tracked file types
+# Shared libraries / native binaries
 *.so filter=lfs diff=lfs merge=lfs -text
 *.dll filter=lfs diff=lfs merge=lfs -text
 *.dylib filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
+# Image / texture assets
 *.png filter=lfs diff=lfs merge=lfs -text
 *.exr filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.bmp filter=lfs diff=lfs merge=lfs -text
+*.svg filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+# 3D model formats (future-proofing)
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.gltf filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+# Audio
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+# Video
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.webm filter=lfs diff=lfs merge=lfs -text
+# Godot binary resources
+*.res filter=lfs diff=lfs merge=lfs -text
 *.os filter=lfs diff=lfs merge=lfs -text
 addons/imgui-godot/bin/libimgui-godot-native.macos.debug.framework/** filter=lfs diff=lfs merge=lfs -text
 addons/imgui-godot/bin/libimgui-godot-native.macos.release.framework/** filter=lfs diff=lfs merge=lfs -text

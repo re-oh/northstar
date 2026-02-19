@@ -1,3 +1,32 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Godot import files (auto-generated from source assets)
+*.import
+
+# Native build artifacts
+*.os
+*.o
+*.obj
+*.d
+
+# OS junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE / editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Tool directories
+.agent/
+.antigravity/
+
+# Export presets (uncomment if you don't want to track these)
+# export_presets.cfg
