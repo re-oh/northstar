@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://yc5xtpica5r1"]
+
+[ext_resource type="Script" uid="uid://cjjb6rmhqm23s" path="res://systems/terrain/mission_terrain_stream.gd" id="1_35gjy"]
+
+[node name="MissionTerrainStream" type="Node3D"]
+script = ExtResource("1_35gjy")
