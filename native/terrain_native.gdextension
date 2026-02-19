@@ -1,0 +1,10 @@
+[configuration]
+
+entry_symbol = "terrain_native_library_init"
+compatibility_minimum = "4.3.0"
+reloadable = true
+
+[libraries]
+
+linux.x86_64 = "res://native/bin/libterrain_native.linux.template_debug.x86_64.so"
+linux.x86_64.release = "res://native/bin/libterrain_native.linux.template_release.x86_64.so"

@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+"""SConstruct for terrain_native GDExtension."""
+import os
+
+env = SConscript("godot-cpp/SConstruct")
+
+# SIMD optimization flags for x86_64
+if env["platform"] == "linux":
+    env.Append(CCFLAGS=[
+        "-march=native",      # Use all CPU-native instructions (AVX2, FMA, etc.)
+        "-mtune=native",      # Tune for the host CPU
+        "-O3",                # Aggressive optimization
+        "-ffast-math",        # Unsafe float optimizations (fine for terrain)
+        "-funroll-loops",     # Unroll loops for SIMD vectorization
+        "-ftree-vectorize",   # Explicit vectorization
+        "-flto",              # Link-time optimization
+    ])
+    env.Append(LINKFLAGS=["-flto"])
+
+# Source files
+sources = Glob("src/*.cpp")
+
+# Output library
+library = env.SharedLibrary(
+    target="bin/libterrain_native{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+    source=sources,
+)
+
+Default(library)
