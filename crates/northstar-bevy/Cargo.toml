@@ -1,0 +1,13 @@
+[package]
+name = "northstar-bevy"
+description = "Bevy integration for Northstar's package-mounting, filename-classifying, container-decoding asset layer."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+northstar-core = { workspace = true }
+bevy = { workspace = true, features = ["bevy_asset"] }
+thiserror = { workspace = true }

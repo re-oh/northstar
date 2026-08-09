@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/northstar-core",
+    "crates/northstar-bevy",
+    "crates/northstar-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT OR Apache-2.0"
+repository = "https://example.invalid/northstar"
+
+[workspace.dependencies]
+northstar-core = { path = "crates/northstar-core" }
+northstar-bevy = { path = "crates/northstar-bevy" }
+thiserror = "2"
+bevy = { version = "0.19", default-features = false }
+
+[profile.dev.package."*"]
+opt-level = 1
