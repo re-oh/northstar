@@ -10,12 +10,32 @@ Conventions for anyone (human or agent) working in this repository.
 - `crates/northstar-bevy` — Bevy integration: `NorthstarAssetPlugin`, the
   custom `northstar://` asset source, the category-handler registry, and
   `AssetRef<T>` loading. Depends on `northstar-core` + `bevy`.
-- `crates/northstar-cli` — a small inspection/round-trip tool
+- `crates/northstar-time` — the simulation clock (`SimClock`): pause, time
+  scale, editor-preview, layered over Bevy's `Time<Fixed>`/`Time<Virtual>`.
+  No simulation logic — see `docs/simulation-time.md`.
+- `crates/northstar-diagnostics` — logging setup, build/version info,
+  startup banner, panic reporting. Does not define error types — see
+  `docs/errors.md`.
+- `crates/northstar` — `NorthstarPlugin`: installs the crates above and
+  orders the `NorthstarPhase` startup sets. No windowing, no gameplay.
+- `crates/northstar-test-app` — `NorthstarTestApp`, a headless `App` (no
+  window/renderer) with `NorthstarPlugin` installed, for tests. Derefs to
+  `bevy::app::App`.
+- `crates/northstar-game` — the minimal windowed executable. The only crate
+  allowed a full-featured (non-`default-features = false`) `bevy`
+  dependency, since opening a window is its entire job.
+- `crates/northstar-editor-core` — the editor `View` trait skeleton. No UI
+  library chosen yet — see `docs/editor-views.md`.
+- `crates/northstar-dev` — the developer CLI (`doctor` / `packages ...` /
+  `assets ...` / `validate ...`). `assets` absorbs the `.nspkg` tooling
   (`classify` / `inspect` / `pack-test` / `unpack-test`). Depends on
   `northstar-core` only — never add a Bevy dependency here.
-- `docs/architecture.md` — design rationale and the decisions this codebase
-  has deliberately deferred. Read it before changing identity, filename, or
-  container semantics.
+- `docs/` — design rationale and the decisions this codebase has
+  deliberately deferred, one document per cross-cutting concern
+  (`architecture.md`, `assets.md`, `modding-boundary.md`,
+  `simulation-time.md`, `coordinates-and-units.md`, `editor-views.md`,
+  `errors.md`). Read the relevant one before changing identity, filename,
+  container, time, or editor-view semantics.
 
 ## Ground rules
 

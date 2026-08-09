@@ -1,0 +1,16 @@
+[package]
+name = "northstar-test-app"
+description = "A minimal, headless Bevy App (no rendering, no window) with Northstar's foundational plugins already installed, for testing assets/simulation/editor code without launching the game."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+bevy = { workspace = true, features = ["bevy_asset"] }
+northstar = { workspace = true }
+northstar-bevy = { workspace = true }

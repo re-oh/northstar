@@ -1,6 +1,6 @@
 [package]
-name = "northstar-core"
-description = "Package-local asset identity, .nspkg filename classification, and the experimental Northstar container codec."
+name = "northstar-editor-core"
+description = "The editor View lifecycle contract: persistent state, activation, closing, serialization, workspace interaction. No UI library chosen yet — see docs/editor-views.md."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -12,6 +12,3 @@ workspace = true
 
 [dependencies]
 thiserror = { workspace = true }
-
-[dev-dependencies]
-proptest = "1"

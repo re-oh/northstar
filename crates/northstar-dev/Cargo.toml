@@ -1,6 +1,6 @@
 [package]
-name = "northstar-cli"
-description = "classify / inspect / pack-test / unpack-test — minimal developer tooling over northstar-core."
+name = "northstar-dev"
+description = "The Northstar developer CLI: doctor, packages, assets (.nspkg tooling), validate."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -8,8 +8,11 @@ license.workspace = true
 repository.workspace = true
 
 [[bin]]
-name = "northstar-cli"
+name = "northstar-dev"
 path = "src/main.rs"
+
+[lints]
+workspace = true
 
 [dependencies]
 northstar-core = { workspace = true }

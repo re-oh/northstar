@@ -1,0 +1,24 @@
+[package]
+name = "northstar-game"
+description = "Minimal Northstar executable: opens a window, installs NorthstarPlugin + Bevy's DefaultPlugins, exits cleanly on window close."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+northstar = { workspace = true }
+northstar-bevy = { workspace = true }
+northstar-diagnostics = { workspace = true }
+
+# Deliberately not `{ workspace = true }`: the workspace's shared `bevy`
+# dependency is `default-features = false` (every other crate only opts
+# into the specific features it needs — see docs/architecture.md). This is
+# the one crate in the workspace that wants Bevy's real default feature set
+# (windowing, rendering, audio, ...), because opening a window is the whole
+# point of it.
+bevy = "=0.19.0"

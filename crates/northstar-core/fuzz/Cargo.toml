@@ -1,0 +1,35 @@
+[package]
+name = "northstar-core-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+
+# Marks this as its own workspace root — cargo-fuzz's standard pattern.
+# Without this, Cargo would try to fold it into the parent northstar
+# workspace (it sits inside crates/northstar-core/), but libfuzzer-sys
+# needs a nightly toolchain that the rest of the workspace deliberately
+# doesn't require (see ../../rust-toolchain.toml).
+[workspace]
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.northstar-core]
+path = ".."
+
+[[bin]]
+name = "container_parse"
+path = "fuzz_targets/container_parse.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "classify_filename"
+path = "fuzz_targets/classify_filename.rs"
+test = false
+doc = false
+bench = false

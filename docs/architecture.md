@@ -194,7 +194,7 @@ loader catch an "obvious mismatch" — a file whose bytes claim to be a
 `northstar-core` (identity types, the filename classifier, the container
 codec) has **no Bevy dependency** and never will. `northstar-bevy` depends
 on it, not the other way around. This split exists so the addressing and
-container model can be tested, used from tooling (`northstar-cli`), and
+container model can be tested, used from tooling (`northstar-dev assets`), and
 reasoned about independent of any particular Bevy version or even of Bevy
 existing at all in a given binary.
 

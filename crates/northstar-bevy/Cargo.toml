@@ -7,6 +7,9 @@ rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 
+[lints]
+workspace = true
+
 [dependencies]
 northstar-core = { workspace = true }
 bevy = { workspace = true, features = ["bevy_asset"] }

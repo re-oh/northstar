@@ -3,7 +3,13 @@ resolver = "2"
 members = [
     "crates/northstar-core",
     "crates/northstar-bevy",
-    "crates/northstar-cli",
+    "crates/northstar-diagnostics",
+    "crates/northstar-time",
+    "crates/northstar",
+    "crates/northstar-test-app",
+    "crates/northstar-game",
+    "crates/northstar-editor-core",
+    "crates/northstar-dev",
 ]
 
 [workspace.package]
@@ -13,11 +19,53 @@ rust-version = "1.95"
 license = "MIT OR Apache-2.0"
 repository = "https://example.invalid/northstar"
 
+[workspace.lints.rust]
+unsafe_code = "deny"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+
 [workspace.dependencies]
 northstar-core = { path = "crates/northstar-core" }
 northstar-bevy = { path = "crates/northstar-bevy" }
+northstar-time = { path = "crates/northstar-time" }
+northstar-diagnostics = { path = "crates/northstar-diagnostics" }
+northstar = { path = "crates/northstar" }
+northstar-editor-core = { path = "crates/northstar-editor-core" }
 thiserror = "2"
-bevy = { version = "0.19", default-features = false }
+# Pinned exactly, not just "0.19" — see rust-toolchain.toml for the
+# matching Rust pin and docs/architecture.md for why an experimental,
+# fast-moving upstream like Bevy is pinned rather than range-matched here.
+bevy = { version = "=0.19.0", default-features = false }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# --- profiles -----------------------------------------------------------
+# dev: fast iteration. Workspace deps get opt-level 1 so debug builds of
+# northstar-game aren't dominated by unoptimized Bevy/glam math; our own
+# crates stay unoptimized for fast rebuilds and full debug info.
+[profile.dev]
+opt-level = 0
+debug = true
 
 [profile.dev.package."*"]
 opt-level = 1
+
+# release: what actually ships. LTO + single codegen unit costs build time
+# in exchange for runtime performance; debug info is kept (not stripped) so
+# release crashes are still symbolicated — see docs/errors.md on panic
+# reporting.
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+debug = true
+strip = false
+
+# release-dev: release optimization levels without the LTO/codegen-units
+# build-time cost, for local profiling iteration that doesn't need a final
+# shippable binary.
+[profile.release-dev]
+inherits = "release"
+lto = false
+codegen-units = 16
