@@ -1,6 +1,6 @@
 [package]
 name = "northstar-ui"
-description = "Northstar's experimental tiled UI foundation."
+description = "Reusable tiled panel, tab, and tool-surface SDK for Northstar."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true

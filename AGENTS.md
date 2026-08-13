@@ -26,6 +26,9 @@ Conventions for anyone (human or agent) working in this repository.
   dependency, since opening a window is its entire job.
 - `crates/northstar-editor-core` — the editor `View` trait skeleton. No UI
   library chosen yet — see `docs/editor-views.md`.
+- `crates/northstar-ui` — the experimental Bevy UI shell: tiled panels,
+  movable tabs, arbitrary tab bodies, and direct edge manipulation. Keep
+  app-specific tools and widgets outside this crate.
 - `crates/northstar-dev` — the developer CLI (`doctor` / `packages ...` /
   `assets ...` / `validate ...`). `assets` absorbs the `.nspkg` tooling
   (`classify` / `inspect` / `pack-test` / `unpack-test`). Depends on

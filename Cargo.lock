@@ -3495,7 +3495,7 @@ checksum = "610a5acd306ec67f907abe5567859a3c693fb9886eb1f012ab8f2a47bef3db51"
 
 [[package]]
 name = "northstar"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "bevy",
  "northstar-bevy",
@@ -3506,7 +3506,7 @@ dependencies = [
 
 [[package]]
 name = "northstar-bevy"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "bevy",
  "northstar-core",
@@ -3515,7 +3515,7 @@ dependencies = [
 
 [[package]]
 name = "northstar-core"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "proptest",
  "thiserror 2.0.20",
@@ -3523,14 +3523,14 @@ dependencies = [
 
 [[package]]
 name = "northstar-dev"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "northstar-core",
 ]
 
 [[package]]
 name = "northstar-diagnostics"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "bevy",
  "tracing",
@@ -3539,14 +3539,14 @@ dependencies = [
 
 [[package]]
 name = "northstar-editor-core"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "thiserror 2.0.20",
 ]
 
 [[package]]
 name = "northstar-game"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "bevy",
  "northstar",
@@ -3557,7 +3557,7 @@ dependencies = [
 
 [[package]]
 name = "northstar-test-app"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "bevy",
  "northstar",
@@ -3566,7 +3566,7 @@ dependencies = [
 
 [[package]]
 name = "northstar-time"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "bevy",
  "northstar-diagnostics",
@@ -3575,7 +3575,7 @@ dependencies = [
 
 [[package]]
 name = "northstar-ui"
-version = "0.1.0"
+version = "0.1.0-dev"
 dependencies = [
  "bevy",
 ]

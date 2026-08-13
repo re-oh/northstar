@@ -9,6 +9,7 @@ use bevy::DefaultPlugins;
 use bevy::app::App;
 use bevy::app::PluginGroup;
 use bevy::log::LogPlugin;
+use bevy::prelude::{Camera2d, Commands, Startup};
 
 use northstar::NorthstarPlugin;
 use northstar_bevy::PackageCatalog;
@@ -35,7 +36,12 @@ fn main() {
             // `northstar-game`, `northstar-dev`, and `NorthstarTestApp`
             // alike.
             DefaultPlugins.build().disable::<LogPlugin>(),
-            NorthstarUiPlugin,
+            NorthstarUiPlugin::default(),
         ))
+        .add_systems(Startup, setup_ui_camera)
         .run();
+}
+
+fn setup_ui_camera(mut commands: Commands) {
+    commands.spawn(Camera2d);
 }
