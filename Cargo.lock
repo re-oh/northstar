@@ -3538,6 +3538,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "northstar-editor"
+version = "0.1.0-dev"
+dependencies = [
+ "bevy",
+ "northstar",
+ "northstar-bevy",
+ "northstar-diagnostics",
+ "northstar-ui",
+]
+
+[[package]]
 name = "northstar-editor-core"
 version = "0.1.0-dev"
 dependencies = [
@@ -3553,6 +3564,16 @@ dependencies = [
  "northstar-bevy",
  "northstar-diagnostics",
  "northstar-ui",
+]
+
+[[package]]
+name = "northstar-launcher"
+version = "0.1.0-dev"
+dependencies = [
+ "bevy",
+ "northstar-diagnostics",
+ "northstar-ui",
+ "tracing",
 ]
 
 [[package]]

@@ -1,5 +1,6 @@
 [workspace]
 resolver = "2"
+default-members = ["crates/northstar-launcher"]
 members = [
     "crates/northstar-core",
     "crates/northstar-bevy",
@@ -8,6 +9,8 @@ members = [
     "crates/northstar",
     "crates/northstar-test-app",
     "crates/northstar-game",
+    "crates/northstar-editor",
+    "crates/northstar-launcher",
     "crates/northstar-editor-core",
     "crates/northstar-ui",
     "crates/northstar-dev",
@@ -34,6 +37,7 @@ northstar-diagnostics = { path = "crates/northstar-diagnostics" }
 northstar = { path = "crates/northstar" }
 northstar-editor-core = { path = "crates/northstar-editor-core" }
 northstar-ui = { path = "crates/northstar-ui" }
+northstar-launcher = { path = "crates/northstar-launcher" }
 thiserror = "2"
 # Pinned exactly, not just "0.19" — see rust-toolchain.toml for the
 # matching Rust pin and docs/architecture.md for why an experimental,

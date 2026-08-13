@@ -24,6 +24,11 @@ Conventions for anyone (human or agent) working in this repository.
 - `crates/northstar-game` — the minimal windowed executable. The only crate
   allowed a full-featured (non-`default-features = false`) `bevy`
   dependency, since opening a window is its entire job.
+- `crates/northstar-launcher` — the default executable and future home for
+  mod configuration. It launches the game or editor; keep simulation and
+  editor implementation out of it.
+- `crates/northstar-editor` — the minimal editor executable shell using
+  `northstar-ui`. Editor tools will be composed here from reusable tabs.
 - `crates/northstar-editor-core` — the editor `View` trait skeleton. No UI
   library chosen yet — see `docs/editor-views.md`.
 - `crates/northstar-ui` — the experimental Bevy UI shell: tiled panels,

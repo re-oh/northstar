@@ -1,0 +1,17 @@
+[package]
+name = "northstar-launcher"
+description = "Main Northstar entry point for launching the game, editor, and future mod management."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+northstar-diagnostics = { workspace = true }
+northstar-ui = { workspace = true }
+bevy = "=0.19.0"
+tracing = { workspace = true }

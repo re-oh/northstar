@@ -36,6 +36,9 @@ cargo clippy --workspace --all-targets
 # window-close)
 cargo run -p northstar-game
 
+# Run the main entry point (also the default for bare `cargo run`)
+cargo run
+
 # Run the developer CLI
 cargo run -p northstar-dev -- doctor
 cargo run -p northstar-dev -- assets classify some_package.map.nspkg
@@ -52,6 +55,8 @@ cargo run -p northstar-dev -- assets classify some_package.map.nspkg
 | `northstar` | `NorthstarPlugin` — installs the above and establishes ordered startup phases. |
 | `northstar-test-app` | `NorthstarTestApp` — a headless `App` (no window/renderer) with `NorthstarPlugin` installed, for tests. |
 | `northstar-game` | The minimal windowed executable. |
+| `northstar-launcher` | Main entry point for launching Northstar, the editor, and future mod configuration. |
+| `northstar-editor` | Minimal editor application shell built on `northstar-ui`. |
 | `northstar-editor-core` | The editor `View` lifecycle contract. No UI library chosen yet. |
 | `northstar-ui` | Experimental tiled panel SDK with movable tabs and arbitrary tool/view bodies. |
 | `northstar-dev` | Developer CLI (`doctor`, `assets ...`, `packages ...`, `validate ...`). |
@@ -72,6 +77,7 @@ belong to one crate.
 | `docs/coordinates-and-units.md` | RFC (proposed, not implemented): handedness, altitude, floating origin, angles, velocity, mass, unit serialization. |
 | `docs/editor-views.md` | The editor `View` lifecycle contract. |
 | `docs/ui-panels.md` | The tiled panel/tab SDK and its application integration boundary. |
+| `docs/launcher.md` | Launcher scope, application targets, and development behavior. |
 
 `AGENTS.md` is the short version for anyone (human or agent) about to
 change code here — read it first.
