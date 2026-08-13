@@ -9,6 +9,7 @@ members = [
     "crates/northstar-test-app",
     "crates/northstar-game",
     "crates/northstar-editor-core",
+    "crates/northstar-ui",
     "crates/northstar-dev",
 ]
 
@@ -32,6 +33,7 @@ northstar-time = { path = "crates/northstar-time" }
 northstar-diagnostics = { path = "crates/northstar-diagnostics" }
 northstar = { path = "crates/northstar" }
 northstar-editor-core = { path = "crates/northstar-editor-core" }
+northstar-ui = { path = "crates/northstar-ui" }
 thiserror = "2"
 # Pinned exactly, not just "0.19" — see rust-toolchain.toml for the
 # matching Rust pin and docs/architecture.md for why an experimental,

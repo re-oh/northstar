@@ -12,6 +12,7 @@ use bevy::log::LogPlugin;
 
 use northstar::NorthstarPlugin;
 use northstar_bevy::PackageCatalog;
+use northstar_ui::NorthstarUiPlugin;
 
 fn main() {
     // Install these before any `App` exists so they cover bootstrap-time
@@ -34,6 +35,7 @@ fn main() {
             // `northstar-game`, `northstar-dev`, and `NorthstarTestApp`
             // alike.
             DefaultPlugins.build().disable::<LogPlugin>(),
+            NorthstarUiPlugin,
         ))
         .run();
 }

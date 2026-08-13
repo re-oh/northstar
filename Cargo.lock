@@ -3552,6 +3552,7 @@ dependencies = [
  "northstar",
  "northstar-bevy",
  "northstar-diagnostics",
+ "northstar-ui",
 ]
 
 [[package]]
@@ -3570,6 +3571,13 @@ dependencies = [
  "bevy",
  "northstar-diagnostics",
  "tracing",
+]
+
+[[package]]
+name = "northstar-ui"
+version = "0.1.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]

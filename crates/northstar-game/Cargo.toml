@@ -14,6 +14,7 @@ workspace = true
 northstar = { workspace = true }
 northstar-bevy = { workspace = true }
 northstar-diagnostics = { workspace = true }
+northstar-ui = { workspace = true }
 
 # Deliberately not `{ workspace = true }`: the workspace's shared `bevy`
 # dependency is `default-features = false` (every other crate only opts
