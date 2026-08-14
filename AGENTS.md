@@ -21,23 +21,28 @@ Conventions for anyone (human or agent) working in this repository.
 - `crates/northstar-test-app` — `NorthstarTestApp`, a headless `App` (no
   window/renderer) with `NorthstarPlugin` installed, for tests. Derefs to
   `bevy::app::App`.
-- `crates/northstar-game` — the minimal windowed executable. The only crate
-  allowed a full-featured (non-`default-features = false`) `bevy`
-  dependency, since opening a window is its entire job.
+- `crates/northstar-game` — the minimal windowed executable. Editor tooling
+  is optional behind its `debug-tools` feature and is not part of normal
+  game builds.
 - `crates/northstar-launcher` — the default executable and future home for
   mod configuration. It launches the game or editor; keep simulation and
   editor implementation out of it.
 - `crates/northstar-editor` — the minimal editor executable shell using
-  `northstar-ui`. Editor tools will be composed here from reusable tabs.
+  the editor UI model and Bevy adapter. Editor tools are composed here.
 - `crates/northstar-editor-core` — the editor `View` trait skeleton. No UI
   library chosen yet — see `docs/editor-views.md`.
-- `crates/northstar-ui` — the experimental Bevy UI shell: tiled panels,
-  movable tabs, arbitrary tab bodies, and direct edge manipulation. Keep
-  app-specific tools and widgets outside this crate.
+- `crates/northstar-editor-ui` — Bevy-free authoritative editor layout model:
+  stable panel/tab/widget/split IDs, topology, focus, mutations, snapshots,
+  and serialization.
+- `crates/northstar-editor-ui-bevy` — Bevy adapter for the editor UI model.
+  ECS entities and `Node`s are presentation state only.
 - `crates/northstar-dev` — the developer CLI (`doctor` / `packages ...` /
   `assets ...` / `validate ...`). `assets` absorbs the `.nspkg` tooling
   (`classify` / `inspect` / `pack-test` / `unpack-test`). Depends on
   `northstar-core` only — never add a Bevy dependency here.
+- Full-featured Bevy is restricted to windowed application crates
+  (`northstar-game`, `northstar-editor`, and `northstar-launcher`). Reusable
+  crates must select only the features they actually need.
 - `docs/` — design rationale and the decisions this codebase has
   deliberately deferred, one document per cross-cutting concern
   (`architecture.md`, `assets.md`, `modding-boundary.md`,

@@ -1,6 +1,6 @@
 [package]
-name = "northstar-ui"
-description = "Reusable tiled panel, tab, and tool-surface SDK for Northstar."
+name = "northstar-editor-ui-bevy"
+description = "Bevy rendering and input adapter for Northstar's editor UI model."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -11,4 +11,6 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+northstar-editor-ui = { workspace = true }
 bevy = { workspace = true, features = ["bevy_ui", "bevy_text"] }
+tracing = { workspace = true }

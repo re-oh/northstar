@@ -10,11 +10,15 @@ repository.workspace = true
 [lints]
 workspace = true
 
+[features]
+default = []
+debug-tools = ["dep:northstar-editor-ui-bevy"]
+
 [dependencies]
 northstar = { workspace = true }
 northstar-bevy = { workspace = true }
 northstar-diagnostics = { workspace = true }
-northstar-ui = { workspace = true }
+northstar-editor-ui-bevy = { workspace = true, optional = true }
 
 # Deliberately not `{ workspace = true }`: the workspace's shared `bevy`
 # dependency is `default-features = false` (every other crate only opts

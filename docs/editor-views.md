@@ -3,9 +3,8 @@
 `northstar-editor-core` defines the lifecycle every editor panel/tab
 implements (`View`, `docs/editor-views.md` is that crate's companion
 document — read `crates/northstar-editor-core/src/view.rs`'s doc comments
-alongside this). **No UI library is chosen or built yet.** This document
-covers what's decided (the contract) and what deliberately isn't (which
-crate renders it).
+alongside this). It remains UI-neutral while `northstar-editor-ui` owns the
+layout model and `northstar-editor-ui-bevy` renders that model.
 
 ## What a `View` is
 
@@ -65,22 +64,19 @@ workspace is fixed before the workspace itself is built, the same way
 `NorthstarLoadContext` fixed the asset-loading interface before every
 decoder existed.
 
-## Why no UI library yet
+## UI adapter boundary
 
-Bevy's own UI story (`bevy_ui`, `bevy_feathers`, egui-via-`bevy_egui`, or
-something else entirely) is a bigger decision than this document's scope,
-and picking one prematurely would make every view implementation depend on
-that choice before there's a second view to validate it against. What *is*
-locked in now is the shape a view needs to have regardless of which UI
-library eventually renders it — identity, kind, title, lifecycle,
-serialization, and a narrow interface back to the workspace.
+The editor application will own the heterogeneous `View` instances and a
+mapping from each `ViewId` to a layout `TabId`. The layout model never owns a
+`View`, and the Bevy adapter never makes an ECS entity authoritative for one.
+Moving a tab changes only the layout mapping; the View instance and its state
+survive. `ViewKind` describes editor behavior while `TabRole` describes visual
+presentation, so they are intentionally not the same type.
 
 ## What's not decided here
 
-- Which UI library/immediate-mode-vs-retained-mode approach the workspace
-  is built on.
-- The actual `WorkspaceHandle` implementation, docking/layout algorithm, or
-  how tabs are visually grouped.
+- The actual `WorkspaceHandle` implementation and View-to-Tab mapping.
+- Which adapters may follow the current retained-mode Bevy adapter.
 - The view registry (`ViewKind` → `ViewDescriptor`) — `ViewDescriptor`'s
   shape is fixed, the registry holding them is not built.
 - State serialization's concrete encoding — left to each view.

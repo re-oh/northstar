@@ -1,29 +1,64 @@
 //! Northstar's main entry point.
 
+use std::collections::HashMap;
+use std::io;
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Child, Command};
 
 use bevy::DefaultPlugins;
 use bevy::app::{App, PluginGroup};
 use bevy::log::LogPlugin;
 use bevy::prelude::*;
 use bevy::window::{Window, WindowPlugin};
-use northstar_ui::prelude::*;
 
-#[derive(Component, Clone, Copy)]
+const BACKGROUND: Color = Color::srgb(0.035, 0.04, 0.055);
+const SURFACE: Color = Color::srgb(0.075, 0.085, 0.11);
+const BORDER: Color = Color::srgb(0.19, 0.21, 0.27);
+const TEXT: Color = Color::srgb(0.93, 0.94, 0.98);
+
+#[derive(Component, Clone, Copy, Debug, PartialEq, Eq, Hash)]
 enum LaunchTarget {
     Game,
     Editor,
 }
 
-type ChangedLaunchButtons = (With<UiButton>, Changed<Interaction>);
+impl LaunchTarget {
+    fn binary(self) -> &'static str {
+        match self {
+            Self::Game => "northstar-game",
+            Self::Editor => "northstar-editor",
+        }
+    }
+
+    fn label(self) -> &'static str {
+        match self {
+            Self::Game => "Northstar",
+            Self::Editor => "Northstar Editor",
+        }
+    }
+}
+
+#[derive(Component)]
+struct LauncherButton {
+    normal: Color,
+    hovered: Color,
+    pressed: Color,
+}
+
+#[derive(Component)]
+struct StatusText;
+
+#[derive(Resource, Default)]
+struct RunningApplications(HashMap<LaunchTarget, Child>);
+
+type ChangedLaunchButtons = (With<LauncherButton>, Changed<Interaction>);
 
 fn main() {
     northstar_diagnostics::install_panic_hook();
     northstar_diagnostics::init_logging();
 
     App::new()
-        .add_plugins((
+        .add_plugins(
             DefaultPlugins
                 .set(WindowPlugin {
                     primary_window: Some(Window {
@@ -34,106 +69,236 @@ fn main() {
                     ..default()
                 })
                 .disable::<LogPlugin>(),
-            NorthstarUiPrimitivesPlugin,
-        ))
+        )
+        .init_resource::<RunningApplications>()
         .add_systems(Startup, setup)
-        .add_systems(Update, launch_selected_target)
+        .add_systems(
+            Update,
+            (update_button_visuals, launch_selected_target, reap_children),
+        )
         .run();
 }
 
-fn setup(mut commands: Commands, theme: Res<UiTheme>) {
+fn setup(mut commands: Commands) {
     commands.spawn(Camera2d);
     commands
-        .spawn(UiSurfaceBundle::full_screen(&theme))
+        .spawn((
+            Node {
+                width: percent(100),
+                height: percent(100),
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                ..default()
+            },
+            BackgroundColor(BACKGROUND),
+        ))
         .with_children(|root| {
-            let mut card_stack = UiStackBundle::column(14.0);
-            card_stack.node.width = px(420);
-            card_stack.node.padding = UiRect::all(px(32));
-            card_stack.node.align_items = AlignItems::Center;
-            card_stack.node.border = UiRect::all(px(1));
             root.spawn((
-                card_stack,
-                BackgroundColor(theme.surface),
-                BorderColor::all(theme.border),
+                Node {
+                    width: px(420),
+                    padding: UiRect::all(px(32)),
+                    flex_direction: FlexDirection::Column,
+                    row_gap: px(14),
+                    align_items: AlignItems::Center,
+                    border: UiRect::all(px(1)),
+                    ..default()
+                },
+                BackgroundColor(SURFACE),
+                BorderColor::all(BORDER),
             ))
             .with_children(|card| {
                 card.spawn((
                     Text::new("NORTHSTAR"),
                     TextFont::from_font_size(34.0),
-                    TextColor(theme.text),
+                    TextColor(TEXT),
                 ));
                 card.spawn((
                     Text::new("0.1 dev launcher"),
                     TextFont::from_font_size(14.0),
-                    TextColor(theme.text.with_alpha(0.62)),
+                    TextColor(TEXT.with_alpha(0.62)),
                     Node {
                         margin: UiRect::bottom(px(16)),
                         ..default()
                     },
                 ));
-                spawn_launch_button(
-                    card,
-                    &theme,
-                    "Launch Northstar",
-                    LaunchTarget::Game,
-                    UiButtonTone::Primary,
-                );
-                spawn_launch_button(
-                    card,
-                    &theme,
-                    "Launch Northstar Editor",
-                    LaunchTarget::Editor,
-                    UiButtonTone::Secondary,
-                );
+                spawn_launch_button(card, "Launch Northstar", LaunchTarget::Game, true);
+                spawn_launch_button(card, "Launch Northstar Editor", LaunchTarget::Editor, false);
+                card.spawn((
+                    StatusText,
+                    Text::new("Ready"),
+                    TextFont::from_font_size(13.0),
+                    TextColor(TEXT.with_alpha(0.72)),
+                    Node {
+                        margin: UiRect::top(px(10)),
+                        ..default()
+                    },
+                ));
             });
         });
 }
 
 fn spawn_launch_button(
     parent: &mut ChildSpawnerCommands,
-    theme: &UiTheme,
     label: &str,
     target: LaunchTarget,
-    tone: UiButtonTone,
+    primary: bool,
 ) {
+    let normal = if primary {
+        Color::srgb(0.18, 0.31, 0.58)
+    } else {
+        Color::srgb(0.12, 0.14, 0.18)
+    };
+    let hovered = if primary {
+        Color::srgb(0.23, 0.39, 0.70)
+    } else {
+        Color::srgb(0.18, 0.21, 0.28)
+    };
+    let pressed = if primary {
+        Color::srgb(0.14, 0.25, 0.48)
+    } else {
+        Color::srgb(0.09, 0.11, 0.15)
+    };
+
     parent
-        .spawn((UiButtonBundle::new(tone, theme), target))
+        .spawn((
+            Button,
+            LauncherButton {
+                normal,
+                hovered,
+                pressed,
+            },
+            target,
+            Node {
+                width: percent(100),
+                height: px(50),
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                border: UiRect::all(px(1)),
+                ..default()
+            },
+            BackgroundColor(normal),
+            BorderColor::all(BORDER),
+        ))
         .with_child((
             Text::new(label),
             TextFont::from_font_size(17.0),
-            TextColor(theme.text),
+            TextColor(TEXT),
         ));
 }
 
-fn launch_selected_target(buttons: Query<(&Interaction, &LaunchTarget), ChangedLaunchButtons>) {
+fn update_button_visuals(
+    mut buttons: Query<(&Interaction, &LauncherButton, &mut BackgroundColor), Changed<Interaction>>,
+) {
+    for (interaction, colors, mut background) in &mut buttons {
+        background.0 = match interaction {
+            Interaction::None => colors.normal,
+            Interaction::Hovered => colors.hovered,
+            Interaction::Pressed => colors.pressed,
+        };
+    }
+}
+
+fn launch_selected_target(
+    buttons: Query<(&Interaction, &LaunchTarget), ChangedLaunchButtons>,
+    mut running: ResMut<RunningApplications>,
+    mut status: Query<&mut Text, With<StatusText>>,
+) {
     for (interaction, target) in &buttons {
         if *interaction != Interaction::Pressed {
             continue;
         }
-        let (binary, package) = match target {
-            LaunchTarget::Game => ("northstar-game", "northstar-game"),
-            LaunchTarget::Editor => ("northstar-editor", "northstar-editor"),
-        };
-        if let Err(error) = launch(binary, package) {
-            tracing::error!(%error, %package, "failed to launch Northstar application");
+
+        if running.0.contains_key(target) {
+            set_status(
+                &mut status,
+                format!("{} is already running", target.label()),
+            );
+            continue;
+        }
+
+        match launch(*target) {
+            Ok(child) => {
+                running.0.insert(*target, child);
+                set_status(&mut status, format!("Launched {}", target.label()));
+            }
+            Err(error) => {
+                tracing::error!(%error, target = target.label(), "failed to launch application");
+                set_status(
+                    &mut status,
+                    format!("Could not launch {}: {error}", target.label()),
+                );
+            }
         }
     }
 }
 
-fn launch(binary: &str, package: &str) -> std::io::Result<()> {
-    let sibling = sibling_binary(binary)?;
-    if sibling.is_file() {
-        Command::new(sibling).spawn()?;
-    } else {
-        Command::new("cargo")
-            .args(["run", "-p", package])
-            .current_dir(workspace_root())
-            .spawn()?;
+fn reap_children(
+    mut running: ResMut<RunningApplications>,
+    mut status: Query<&mut Text, With<StatusText>>,
+) {
+    let mut finished = Vec::new();
+    for (target, child) in &mut running.0 {
+        match child.try_wait() {
+            Ok(Some(exit)) => {
+                set_status(
+                    &mut status,
+                    format!("{} exited with {exit}", target.label()),
+                );
+                finished.push(*target);
+            }
+            Ok(None) => {}
+            Err(error) => {
+                tracing::error!(%error, target = target.label(), "failed to poll application");
+                set_status(
+                    &mut status,
+                    format!("Lost track of {}: {error}", target.label()),
+                );
+                finished.push(*target);
+            }
+        }
     }
-    Ok(())
+    for target in finished {
+        running.0.remove(&target);
+    }
 }
 
-fn sibling_binary(binary: &str) -> std::io::Result<PathBuf> {
+fn set_status(status: &mut Query<&mut Text, With<StatusText>>, message: String) {
+    if let Ok(mut text) = status.single_mut() {
+        **text = message;
+    }
+}
+
+fn launch(target: LaunchTarget) -> io::Result<Child> {
+    let sibling = sibling_binary(target.binary())?;
+    if sibling.is_file() {
+        return Command::new(sibling).spawn();
+    }
+
+    #[cfg(debug_assertions)]
+    {
+        let root = workspace_root();
+        if !root.join("Cargo.toml").is_file() {
+            return Err(io::Error::new(
+                io::ErrorKind::NotFound,
+                format!("development workspace not found at {}", root.display()),
+            ));
+        }
+        Command::new("cargo")
+            .args(["run", "-p", target.binary()])
+            .current_dir(root)
+            .spawn()
+    }
+
+    #[cfg(not(debug_assertions))]
+    {
+        Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            format!("installed {} binary was not found", target.binary()),
+        ))
+    }
+}
+
+fn sibling_binary(binary: &str) -> io::Result<PathBuf> {
     let current = std::env::current_exe()?;
     let directory = current.parent().unwrap_or_else(|| Path::new("."));
     Ok(directory.join(format!("{binary}{}", std::env::consts::EXE_SUFFIX)))

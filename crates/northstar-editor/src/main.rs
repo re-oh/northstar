@@ -7,7 +7,8 @@ use bevy::prelude::*;
 use bevy::window::{Window, WindowPlugin};
 use northstar::NorthstarPlugin;
 use northstar_bevy::PackageCatalog;
-use northstar_ui::NorthstarUiPlugin;
+use northstar_editor_ui::EditorUiModel;
+use northstar_editor_ui_bevy::NorthstarEditorUiBevyPlugin;
 
 fn main() {
     northstar_diagnostics::install_panic_hook();
@@ -25,7 +26,7 @@ fn main() {
                     ..default()
                 })
                 .disable::<LogPlugin>(),
-            NorthstarUiPlugin::default(),
+            NorthstarEditorUiBevyPlugin::default().with_model(EditorUiModel::default()),
         ))
         .add_systems(Startup, setup_camera)
         .run();

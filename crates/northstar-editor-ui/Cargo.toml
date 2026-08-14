@@ -1,0 +1,18 @@
+[package]
+name = "northstar-editor-ui"
+description = "Bevy-free authoritative editor panel, tab, focus, and workspace layout model."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
