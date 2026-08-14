@@ -3545,6 +3545,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "northstar-editor-ui"
+version = "0.1.0-dev"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+]
+
+[[package]]
+name = "northstar-editor-ui-bevy"
+version = "0.1.0-dev"
+dependencies = [
+ "bevy",
+ "northstar-editor-ui",
+ "tracing",
+]
+
+[[package]]
 name = "northstar-game"
 version = "0.1.0-dev"
 dependencies = [
@@ -3552,7 +3570,7 @@ dependencies = [
  "northstar",
  "northstar-bevy",
  "northstar-diagnostics",
- "northstar-ui",
+ "northstar-editor-ui-bevy",
 ]
 
 [[package]]
@@ -3571,13 +3589,6 @@ dependencies = [
  "bevy",
  "northstar-diagnostics",
  "tracing",
-]
-
-[[package]]
-name = "northstar-ui"
-version = "0.1.0-dev"
-dependencies = [
- "bevy",
 ]
 
 [[package]]

@@ -53,7 +53,8 @@ cargo run -p northstar-dev -- assets classify some_package.map.nspkg
 | `northstar-test-app` | `NorthstarTestApp` — a headless `App` (no window/renderer) with `NorthstarPlugin` installed, for tests. |
 | `northstar-game` | The minimal windowed executable. |
 | `northstar-editor-core` | The editor `View` lifecycle contract. No UI library chosen yet. |
-| `northstar-ui` | Experimental tiled panel SDK with movable tabs and arbitrary tool/view bodies. |
+| `northstar-editor-ui` | Bevy-free authoritative editor panel/tab/workspace model. |
+| `northstar-editor-ui-bevy` | Bevy renderer and input adapter for the editor UI model. |
 | `northstar-dev` | Developer CLI (`doctor`, `assets ...`, `packages ...`, `validate ...`). |
 
 Each crate's own doc comments (`cargo doc --workspace --open`) cover its
@@ -71,7 +72,7 @@ belong to one crate.
 | `docs/simulation-time.md` | `SimClock`: rendered frames vs. fixed sim ticks vs. paused vs. editor-preview vs. time scale. |
 | `docs/coordinates-and-units.md` | RFC (proposed, not implemented): handedness, altitude, floating origin, angles, velocity, mass, unit serialization. |
 | `docs/editor-views.md` | The editor `View` lifecycle contract. |
-| `docs/ui-panels.md` | The tiled panel/tab SDK and its application integration boundary. |
+| `docs/ui-panels.md` | Editor UI model, Bevy adapter, and View/workspace integration boundary. |
 
 `AGENTS.md` is the short version for anyone (human or agent) about to
 change code here — read it first.

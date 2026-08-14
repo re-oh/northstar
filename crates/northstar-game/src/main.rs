@@ -9,11 +9,13 @@ use bevy::DefaultPlugins;
 use bevy::app::App;
 use bevy::app::PluginGroup;
 use bevy::log::LogPlugin;
+#[cfg(feature = "debug-tools")]
 use bevy::prelude::{Camera2d, Commands, Startup};
 
 use northstar::NorthstarPlugin;
 use northstar_bevy::PackageCatalog;
-use northstar_ui::NorthstarUiPlugin;
+#[cfg(feature = "debug-tools")]
+use northstar_editor_ui_bevy::NorthstarEditorUiBevyPlugin;
 
 fn main() {
     // Install these before any `App` exists so they cover bootstrap-time
@@ -22,26 +24,28 @@ fn main() {
     northstar_diagnostics::install_panic_hook();
     northstar_diagnostics::init_logging();
 
-    App::new()
-        .add_plugins((
-            // Must precede `DefaultPlugins`: installs the `northstar://`
-            // asset source, which Bevy's `AssetPlugin` (part of
-            // `DefaultPlugins`) needs to already know about when it builds.
-            NorthstarPlugin::new(PackageCatalog::loose_directory("assets/packages")),
-            // Bevy's own `LogPlugin` also tries to install a global
-            // `tracing` subscriber, which conflicts with (and loses to,
-            // noisily) the one `northstar_diagnostics::init_logging` just
-            // installed above. Disable it so northstar-diagnostics stays
-            // the single source of truth for logging setup everywhere —
-            // `northstar-game`, `northstar-dev`, and `NorthstarTestApp`
-            // alike.
-            DefaultPlugins.build().disable::<LogPlugin>(),
-            NorthstarUiPlugin::default(),
-        ))
-        .add_systems(Startup, setup_ui_camera)
-        .run();
+    let mut app = App::new();
+    app.add_plugins((
+        // Must precede `DefaultPlugins`: installs the `northstar://`
+        // asset source, which Bevy's `AssetPlugin` (part of
+        // `DefaultPlugins`) needs to already know about when it builds.
+        NorthstarPlugin::new(PackageCatalog::loose_directory("assets/packages")),
+        // Bevy's own `LogPlugin` also tries to install a global
+        // `tracing` subscriber, which conflicts with (and loses to,
+        // noisily) the one `northstar_diagnostics::init_logging` just
+        // installed above. Disable it so northstar-diagnostics stays
+        // the single source of truth for logging setup everywhere —
+        // `northstar-game`, `northstar-dev`, and `NorthstarTestApp`
+        // alike.
+        DefaultPlugins.build().disable::<LogPlugin>(),
+    ));
+    #[cfg(feature = "debug-tools")]
+    app.add_plugins(NorthstarEditorUiBevyPlugin::default())
+        .add_systems(Startup, setup_ui_camera);
+    app.run();
 }
 
+#[cfg(feature = "debug-tools")]
 fn setup_ui_camera(mut commands: Commands) {
     commands.spawn(Camera2d);
 }
